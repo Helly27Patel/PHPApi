@@ -3,12 +3,15 @@
 require 'connection.php';
 
 $email = $_REQUEST["email"];
-$pwd = md5($_REQUEST["pwd"]);
+$pwd = md5($_REQUEST["password"]);
 
 $db = new DBConnect();
 $con = $db->connect();
 
-$checkuser = "SELECT `user_id`, `email`, `username` FROM `user_data` WHERE `email`='$email' AND `password`='$pwd'";
+$checkuser = "SELECT `stud_id`,`stud_name`,`stud_email` FROM `student_detail` WHERE
+             `stud_email`='$email' AND `password`='$pwd'";
+
+//echo $checkuser;
 
 $result = mysqli_query($con,$checkuser);
 
@@ -21,7 +24,7 @@ if(mysqli_num_rows($result)>0){
 }else{
     $response['user']=(object)[];
     $response['error'] = 1;
-    $response['message'] = "Login Failed";
+    $response['message'] = "Username & Password does not match";
 }
 
 echo json_encode($response);
